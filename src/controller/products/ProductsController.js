@@ -34,7 +34,7 @@ const getProduct = async (req, res) => {
     }
 
     if (!result.length) {
-      return res.status(404).json({ message: "No products found" });
+      // return res.status(404).json({ message: "No products found" });
     }
 
     return res.status(200).json({
