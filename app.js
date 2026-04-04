@@ -2,6 +2,9 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 require("./config/dbConfig");
+
+app.set("trust proxy", 1);
+
 app.use(
   cors({
     origin: "https://grocery-website-sable.vercel.app",
