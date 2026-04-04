@@ -4,7 +4,7 @@ const app = express();
 require("./config/dbConfig");
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "https://grocery-website-sable.vercel.app",
     credentials: true,
   }),
 );
