@@ -4,9 +4,9 @@ const checkoutSchema = Joi.object({
   userId: Joi.number().required(),
   cartId: Joi.number().required(),
   addressId: Joi.number().allow(null),
-  paymentMethod: Joi.string()
-    .valid("COD", "PAYPAL", "GPAY")
-    .default("COD")
+  payment_method: Joi.string()
+    .valid("cod", "paypal", "gpay")
+    .default("cod")
     .required(),
 });
 

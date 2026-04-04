@@ -37,7 +37,6 @@ const toggleFavorite = async (req, res) => {
         .json({ status: true, message: "Added to favorites" });
     }
   } catch (error) {
-    console.log("err", error);
     return res.status(500).json({ status: false, message: error.message });
   }
 };
@@ -95,7 +94,6 @@ const getFavorites = async (req, res) => {
           : "No favorites found",
     });
   } catch (error) {
-    console.log("err", error);
     return res.status(500).json({
       status: false,
       message: "Internal server error",

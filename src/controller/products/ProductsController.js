@@ -33,13 +33,17 @@ const getProduct = async (req, res) => {
       result = rows;
     }
 
+    if (!result.length) {
+      return res.status(404).json({ message: "No products found" });
+    }
+
     return res.status(200).json({
       status: true,
       data: result,
       message: "Product fetched successfully",
     });
   } catch (error) {
-    res.send(500).json({
+    res.status(500).json({
       status: false,
       message: error.message,
     });
@@ -49,9 +53,7 @@ const getProduct = async (req, res) => {
 const getProductById = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log("id", id);
     const [data] = await db.query("SELECT * FROM  products WHERE id=?", [id]);
-    console.log("data", data);
     if (data.length == 0) {
       return res.status(400).json({
         status: false,
@@ -213,7 +215,6 @@ const updateProduct = async (req, res) => {
       message: "Product Update successfully",
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ status: false, message: error.message });
   }
 };
@@ -221,11 +222,9 @@ const updateProduct = async (req, res) => {
 const updateProductStatus = async (req, res) => {
   try {
     const { id, status } = req.body || {};
-    console.log("id", id, status);
     const [existing] = await db.query("SELECT * FROM products WHERE id = ?", [
       id,
     ]);
-    console.log("existing", existing);
     if (existing == 0) {
       return res
         .status(400)

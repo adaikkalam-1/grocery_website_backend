@@ -4,8 +4,9 @@ const {
   toggleFavorite,
   getFavorites,
 } = require("../controller/favorite/favoriteController");
+const authMiddleware = require("../middleware/authMiddleware");
 
-router.post("/", toggleFavorite);
-router.get("/:userId", getFavorites);
+router.post("/", authMiddleware, toggleFavorite);
+router.get("/:userId", authMiddleware, getFavorites);
 
 module.exports = router;

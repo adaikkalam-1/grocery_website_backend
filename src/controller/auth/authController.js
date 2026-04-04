@@ -50,7 +50,6 @@ const login = async (req, res) => {
 
     return res.status(200).json({ message: "Login successful", data: newData });
   } catch (error) {
-    console.log("error", error);
     return res.status(500).json({ message: error.message });
   }
 };
@@ -58,7 +57,6 @@ const login = async (req, res) => {
 const register = async (req, res) => {
   try {
     const { error, value } = registerSchema.validate(req.body);
-    console.log(value);
     if (error) {
       return res.status(400).json({
         message: error.details[0].message,

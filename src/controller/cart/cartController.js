@@ -208,7 +208,7 @@ const getCart = async (req, res) => {
       0,
     );
     const tax = totalOriginal * 0.05;
-    const deliveryCharge = 10;
+    const deliveryCharge = items?.length > 0 ? 10 : 0;
     const totalAmount = total + tax + deliveryCharge;
 
     return res.status(200).json({
@@ -221,6 +221,7 @@ const getCart = async (req, res) => {
       subTotal: totalOriginal,
       totalItems: items?.length || 0,
       cartId,
+      message: "Cart fetched successfully",
     });
   } catch (err) {
     return res.status(500).json({ status: false, message: err.message });

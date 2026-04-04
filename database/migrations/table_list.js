@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS cart_items (
       total_amount INT(10) NOT NULL,
       status ENUM('pending', 'completed', 'cancelled') DEFAULT 'pending',
       payment_status ENUM('pending', 'completed', 'cancelled') DEFAULT 'pending',
-      payment_method ENUM('cod', 'online') DEFAULT 'cod',
+      payment_method ENUM('cod', 'paypal', 'gpay') DEFAULT 'cod',
       address VARCHAR(255),
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE

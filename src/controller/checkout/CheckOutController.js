@@ -11,7 +11,7 @@ const checkout = async (req, res) => {
       return res.status(400).json({ status: false, message });
     }
 
-    const { userId, cartId, addressId, paymentMethod } = value;
+    const { userId, cartId, addressId, payment_method } = value;
 
     await connection.beginTransaction();
 
@@ -97,7 +97,7 @@ const checkout = async (req, res) => {
     const [orderResult] = await connection.query(
       `INSERT INTO orders (user_id, total_amount, status, address, payment_method)
        VALUES (?, ?, ?, ?, ?)`,
-      [userId, totalAmount, "pending", fullAddress, paymentMethod],
+      [userId, totalAmount, "pending", fullAddress, payment_method],
     );
 
     const orderId = orderResult.insertId;
@@ -141,7 +141,6 @@ const checkout = async (req, res) => {
       totalAmount,
     });
   } catch (error) {
-    console.log("err", error);
     await connection.rollback();
     return res.status(500).json({
       status: false,
