@@ -19,7 +19,7 @@
 
 # production
 /build
-
+!config/isrgrootx1.pem
 # misc
 .DS_Store
 *.pem
