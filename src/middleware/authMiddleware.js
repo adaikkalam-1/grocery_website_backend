@@ -13,9 +13,10 @@ const authMiddleware = async (req, res, next) => {
     }
     const rawToken = parts[1];
     const decoded = jwt.verify(rawToken, process.env.JWT_SECRET);
-    const [user] = await db.query("SELECT * FROM users WHERE  id = ? ", [
-      decoded.id,
-    ]);
+    const [user] = await db.query(
+      "SELECT * FROM users WHERE status = 'active' AND id = ? ",
+      [decoded.id],
+    );
     const userID = user[0];
     if (!userID) {
       return res.status(401).json({ error: "Unauthorized" });
