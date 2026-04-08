@@ -64,8 +64,7 @@ const getFavorites = async (req, res) => {
     }
 
     const [favorites] = await db.query(
-      `
-      SELECT 
+      `SELECT 
         p.id AS product_id,
         p.product_name,
         p.description,
@@ -74,8 +73,7 @@ const getFavorites = async (req, res) => {
         p.image_url,
         p.stock,
         p.status,
-        f.id AS favorite_id,
-        f.created_at AS favorite_created_at
+        f.id AS favorite_id
       FROM favorites f
       JOIN products p ON f.product_id = p.id
       WHERE f.user_id = ?
@@ -86,17 +84,14 @@ const getFavorites = async (req, res) => {
 
     return res.status(200).json({
       status: true,
-      count: favorites.length,
+      count: favorites?.length || 0,
       data: favorites,
-      message:
-        favorites.length > 0
-          ? "Favorites fetched successfully"
-          : "No favorites found",
+      message: "Favorites fetched successfully",
     });
   } catch (error) {
     return res.status(500).json({
       status: false,
-      message: "Internal server error",
+      message: error.message,
     });
   }
 };

@@ -15,7 +15,6 @@ const getCategories = async (req, res) => {
       status: true,
     });
   } catch (error) {
-    console.log("error", error);
     return res.status(500).json({
       message: error.message,
       status: false,
@@ -40,14 +39,13 @@ const createCategories = async (req, res) => {
       "SELECT * FROM categories WHERE category_name = ?",
       [category_name],
     );
-    console.log("existing", existing);
     if (existing.length > 0) {
       return res
         .status(404)
         .json({ message: "Category name already Available" });
     }
 
-    const [result] = await db.query(
+    await db.query(
       "INSERT INTO categories (category_name,description,category_slug,status,image_url) VALUES (?,?,?,?,?)",
       [category_name, description, category_slug, status, image_url],
     );
@@ -71,7 +69,6 @@ const getCategoryById = async (req, res) => {
     let [result] = await db.query("SELECT * FROM categories WHERE id = ? ", [
       id,
     ]);
-    console.log("result", result);
     if (result.length == 0) {
       return res.status(404).json({
         status: "false",
@@ -105,7 +102,6 @@ const updateCategory = async (req, res) => {
     let { id, category_name, description, category_slug, status, image_url } =
       value;
     let [data] = await db.query("SELECT * FROM categories WHERE id = ? ", [id]);
-    console.log("data", data);
     if (data.length == 0) {
       return res.status(404).json({
         status: false,
@@ -113,12 +109,11 @@ const updateCategory = async (req, res) => {
       });
     }
 
-    const [result] = await db.query(
+    await db.query(
       "UPDATE categories  SET category_name =? , description= ? , category_slug= ?, status = ?, image_url= ? WHERE id = ?",
       [category_name, description, category_slug, status, image_url, id],
     );
 
-    console.log("result", result);
     return res.status(201).json({
       status: true,
       message: "Categories update successfully",
@@ -173,9 +168,7 @@ const deleteCategory = async (req, res) => {
         message: "category not found",
       });
     }
-    const [deleteData] = await db.query("DELETE FROM categories WHERE id=?", [
-      id,
-    ]);
+    await db.query("DELETE FROM categories WHERE id=?", [id]);
     res.status(200).json({
       status: true,
       message: "Categories deleted successfully",
