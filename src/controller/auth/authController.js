@@ -59,7 +59,7 @@ const login = async (req, res) => {
     // });
     return res.status(200).json({ message: "Login successful", data: newData });
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(500).json({ status: false, error: error });
   }
 };
 
@@ -91,7 +91,7 @@ const register = async (req, res) => {
       message: "Registered successfully",
     });
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(500).json({ status: false, message: error.message });
   }
 };
 

@@ -1,4 +1,5 @@
 const db = require("../../../config/dbConfig");
+const { sendCartUpdate } = require("../../../socket/emitters");
 const {
   addToCartSchema,
   updateCartSchema,
@@ -65,7 +66,7 @@ const addToCart = async (req, res) => {
         [cartId, productId, quantity, product[0]?.offer_price],
       );
     }
-
+    await sendCartUpdate(userId);
     return res
       .status(201)
       .json({ status: true, message: "Product added to cart" });
@@ -106,7 +107,7 @@ const incrementItem = async (req, res) => {
       "UPDATE cart_items SET quantity = quantity + ? WHERE cart_id = ? AND product_id = ?",
       [quantity, cartId, productId],
     );
-
+    await sendCartUpdate(userId);
     return res
       .status(201)
       .json({ status: true, message: "Quantity increased" });
@@ -162,7 +163,7 @@ const decrementItem = async (req, res) => {
         [quantity, cartId, productId],
       );
     }
-
+    await sendCartUpdate(userId);
     return res
       .status(200)
       .json({ status: true, message: "Quantity decreased" });
@@ -253,7 +254,7 @@ const clearCart = async (req, res) => {
     }
 
     await db.query("DELETE FROM cart_items WHERE cart_id = ?", [cartId]);
-
+    await sendCartUpdate(userId);
     return res
       .status(200)
       .json({ status: true, message: "Cart cleared successfully" });
@@ -288,7 +289,7 @@ const clearSingleItem = async (req, res) => {
       "DELETE FROM cart_items WHERE cart_id = ? AND product_id = ?",
       [cartId, productId],
     );
-
+    await sendCartUpdate(userId);
     return res
       .status(200)
       .json({ status: true, message: "Item cleared successfully" });
