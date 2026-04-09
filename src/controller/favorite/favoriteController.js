@@ -1,4 +1,5 @@
 const db = require("../../../config/dbConfig");
+const { sendFavUpdate } = require("../../../socket/emitters");
 
 const toggleFavorite = async (req, res) => {
   try {
@@ -24,6 +25,7 @@ const toggleFavorite = async (req, res) => {
         "DELETE FROM favorites WHERE user_id = ? AND product_id = ?",
         [userId, productId],
       );
+      await sendFavUpdate(userId);
       return res
         .status(200)
         .json({ status: true, message: "Removed from favorites" });
@@ -32,6 +34,7 @@ const toggleFavorite = async (req, res) => {
         "INSERT INTO favorites (user_id, product_id) VALUES (?, ?)",
         [userId, productId],
       );
+      await sendFavUpdate(userId);
       return res
         .status(200)
         .json({ status: true, message: "Added to favorites" });
